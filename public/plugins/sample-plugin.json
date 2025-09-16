@@ -1,0 +1,13 @@
+{
+  "id": "sample-plugin",
+  "name": "Sample Plugin",
+  "version": "1.0.0",
+  "description": "A sample plugin to demonstrate the plugin structure",
+  "author": "KushAI Team",
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": [
+    "sample",
+    "demo"
+  ]
+}

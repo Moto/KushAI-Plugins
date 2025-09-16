@@ -21,4 +21,26 @@ if (fs.existsSync(pluginsIndex)) {
   console.log('Created default plugins.json in public directory');
 }
 
+// Create plugins directory in public if it doesn't exist
+const publicPluginsDir = path.join(publicDir, 'plugins');
+if (!fs.existsSync(publicPluginsDir)) {
+  fs.mkdirSync(publicPluginsDir);
+}
+
+// Copy individual plugin manifests to public directory
+const pluginsDir = path.join(__dirname, '..', 'plugins');
+const pluginDirs = fs.readdirSync(pluginsDir, { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .map(dirent => dirent.name);
+
+pluginDirs.forEach(pluginDir => {
+  const pluginManifest = path.join(pluginsDir, pluginDir, 'plugin.json');
+  const publicPluginManifest = path.join(publicPluginsDir, `${pluginDir}.json`);
+  
+  if (fs.existsSync(pluginManifest)) {
+    fs.copyFileSync(pluginManifest, publicPluginManifest);
+    console.log(`Copied ${pluginDir} manifest to public directory`);
+  }
+});
+
 console.log('Build completed successfully!');
