@@ -1,6 +1,19 @@
 {
   "plugins": [
     {
+      "id": "productivity-plugin",
+      "name": "Productivity Plugin",
+      "version": "1.0.0",
+      "description": "A plugin that helps with task management and productivity",
+      "author": "KushAI Team",
+      "license": "MIT",
+      "keywords": [
+        "productivity",
+        "task",
+        "management"
+      ]
+    },
+    {
       "id": "sample-plugin",
       "name": "Sample Plugin",
       "version": "1.0.0",
@@ -23,19 +36,6 @@
         "utility",
         "helper",
         "tools"
-      ]
-    },
-    {
-      "id": "productivity-plugin",
-      "name": "Productivity Plugin",
-      "version": "1.0.0",
-      "description": "A plugin that helps with task management and productivity",
-      "author": "KushAI Team",
-      "license": "MIT",
-      "keywords": [
-        "productivity",
-        "task",
-        "management"
       ]
     }
   ]

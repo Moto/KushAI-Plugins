@@ -1,0 +1,14 @@
+{
+  "id": "utility-plugin",
+  "name": "Utility Plugin",
+  "version": "1.0.0",
+  "description": "A plugin that provides various utility functions for KushAI",
+  "author": "KushAI Team",
+  "license": "MIT",
+  "main": "index.js",
+  "keywords": [
+    "utility",
+    "helper",
+    "tools"
+  ]
+}
