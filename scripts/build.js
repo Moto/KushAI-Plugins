@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { generatePluginsIndex } = require('./generate-index.js');
 
 // Create public directory if it doesn't exist
 const publicDir = path.join(__dirname, '..', 'public');
@@ -7,7 +8,8 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir);
 }
 
-// Copy plugins index to public directory
+// Generate and copy plugins index to public directory
+generatePluginsIndex();
 const pluginsIndex = path.join(__dirname, '..', 'plugins', 'index.json');
 const publicPluginsIndex = path.join(publicDir, 'plugins.json');
 
