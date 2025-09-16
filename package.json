@@ -1,0 +1,19 @@
+{
+  "name": "kushai-plugins-marketplace",
+  "version": "1.0.0",
+  "description": "KushAI Plugins Marketplace",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moto/KushAI-Plugins.git"
+  },
+  "keywords": [
+    "kushai",
+    "plugins",
+    "marketplace"
+  ],
+  "author": "KushAI Team",
+  "license": "MIT"
+}

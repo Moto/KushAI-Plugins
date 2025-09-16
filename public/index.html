@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KushAI Plugins Marketplace</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .endpoint {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        code {
+            background-color: #f1f1f1;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KushAI Plugins Marketplace</h1>
+        <p>Central repository for KushAI plugins</p>
+    </header>
+    
+    <div class="content">
+        <h2>API Endpoints</h2>
+        <div class="endpoint">
+            <h3>Get All Plugins</h3>
+            <p><code>GET https://moto.github.io/KushAI-Plugins/plugins.json</code></p>
+            <p>Returns a list of all available plugins in the marketplace.</p>
+        </div>
+        
+        <h2>Plugin Structure</h2>
+        <p>Each plugin in the marketplace follows a specific structure:</p>
+        <ul>
+            <li>Plugin metadata in <code>plugin.json</code></li>
+            <li>Plugin code and assets in the plugin's directory</li>
+        </ul>
+        
+        <h2>How to Use</h2>
+        <p>To use plugins from this marketplace:</p>
+        <ol>
+            <li>Browse available plugins in the <a href="https://github.com/Moto/KushAI-Plugins/tree/main/plugins">plugins directory</a></li>
+            <li>Download and install plugins manually, or</li>
+            <li>Use the KushAI application to automatically discover and install plugins</li>
+        </ol>
+    </div>
+</body>
+</html>
