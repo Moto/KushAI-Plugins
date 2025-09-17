@@ -45,4 +45,36 @@ pluginDirs.forEach(pluginDir => {
   }
 });
 
+// Copy marketplace.html to public directory
+const marketplaceFile = path.join(__dirname, '..', 'public', 'marketplace.html');
+const publicMarketplaceFile = path.join(publicDir, 'marketplace.html');
+if (fs.existsSync(marketplaceFile)) {
+  fs.copyFileSync(marketplaceFile, publicMarketplaceFile);
+  console.log('Copied marketplace.html to public directory');
+}
+
+// Copy ratings.json to public directory
+const ratingsFile = path.join(__dirname, '..', 'public', 'ratings.json');
+const publicRatingsFile = path.join(publicDir, 'ratings.json');
+if (fs.existsSync(ratingsFile)) {
+  fs.copyFileSync(ratingsFile, publicRatingsFile);
+  console.log('Copied ratings.json to public directory');
+}
+
+// Copy analytics.json to public directory
+const analyticsFile = path.join(__dirname, '..', 'public', 'analytics.json');
+const publicAnalyticsFile = path.join(publicDir, 'analytics.json');
+if (fs.existsSync(analyticsFile)) {
+  fs.copyFileSync(analyticsFile, publicAnalyticsFile);
+  console.log('Copied analytics.json to public directory');
+}
+
+// Copy developer.html to public directory
+const developerFile = path.join(__dirname, '..', 'public', 'developer.html');
+const publicDeveloperFile = path.join(publicDir, 'developer.html');
+if (fs.existsSync(developerFile)) {
+  fs.copyFileSync(developerFile, publicDeveloperFile);
+  console.log('Copied developer.html to public directory');
+}
+
 console.log('Build completed successfully!');

@@ -1,41 +1,83 @@
 // test-plugin-manager.js
 // Test script for the plugin manager
 
-const PluginManager = require('../plugin-manager.js');
+const PluginManager = require('./plugin-manager.js');
 const path = require('path');
 
 async function testPluginManager() {
-  const pluginManager = new PluginManager();
+  // Use the correct plugins directory
+  const pluginsDir = path.join(__dirname, 'plugins');
+  const pluginManager = new PluginManager(pluginsDir);
   
-  // Load a sample plugin (assuming it exists in the plugins directory)
-  const samplePluginPath = path.join(__dirname, 'plugins', 'sample-plugin');
-  const sampleLoaded = await pluginManager.loadPlugin(samplePluginPath);
+  console.log(`Plugins directory: ${pluginsDir}`);
   
-  if (!sampleLoaded) {
-    console.log('Sample plugin not found, skipping...');
-  }
+  // Load all plugins from the plugins directory in the correct order
+  console.log('\nLoading all plugins...');
+  const fs = require('fs');
   
-  // Load the utility plugin
-  const utilityPluginPath = path.join(__dirname, 'plugins', 'utility-plugin');
-  const utilityLoaded = await pluginManager.loadPlugin(utilityPluginPath);
-  
-  if (!utilityLoaded) {
-    console.log('Utility plugin not found, skipping...');
-  }
-  
-  // Load the productivity plugin
-  const productivityPluginPath = path.join(__dirname, 'plugins', 'productivity-plugin');
-  const productivityLoaded = await pluginManager.loadPlugin(productivityPluginPath);
-  
-  if (!productivityLoaded) {
-    console.log('Productivity plugin not found, skipping...');
+  if (fs.existsSync(pluginsDir)) {
+    // Load plugins without dependencies first
+    const pluginDirs = fs.readdirSync(pluginsDir, { withFileTypes: true })
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name);
+    
+    console.log(`Found plugin directories: ${pluginDirs.join(', ')}`);
+    
+    // First, load plugins without dependencies
+    for (const pluginDir of pluginDirs) {
+      const pluginPath = path.join(pluginsDir, pluginDir);
+      const manifestPath = path.join(pluginPath, 'plugin.json');
+      
+      // Check if manifest exists
+      if (fs.existsSync(manifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+        // If no dependencies, load it now
+        if (!manifest.dependencies || Object.keys(manifest.dependencies).length === 0) {
+          console.log(`Loading plugin without dependencies: ${pluginPath}`);
+          await pluginManager.loadPlugin(pluginPath);
+        }
+      }
+    }
+    
+    // Then, load plugins with dependencies
+    for (const pluginDir of pluginDirs) {
+      const pluginPath = path.join(pluginsDir, pluginDir);
+      const manifestPath = path.join(pluginPath, 'plugin.json');
+      
+      // Check if manifest exists
+      if (fs.existsSync(manifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+        // If has dependencies, load it now (dependencies should be loaded already)
+        if (manifest.dependencies && Object.keys(manifest.dependencies).length > 0) {
+          console.log(`Loading plugin with dependencies: ${pluginPath}`);
+          await pluginManager.loadPlugin(pluginPath);
+        }
+      }
+    }
+  } else {
+    console.log('Plugins directory does not exist');
   }
   
   // Show loaded plugins
-  console.log('Loaded plugins:');
-  const plugins = pluginManager.listPlugins();
-  plugins.forEach(plugin => {
+  console.log('\nLoaded plugins:');
+  const loadedPlugins = pluginManager.listPlugins();
+  loadedPlugins.forEach(plugin => {
     console.log(`- ${plugin.name} (${plugin.id}) v${plugin.version}`);
+    // Show dependencies if any
+    const pluginInfo = pluginManager.getPluginInfo(plugin.id);
+    if (pluginInfo && Object.keys(pluginInfo.dependencies).length > 0) {
+      console.log(`  Dependencies: ${Object.entries(pluginInfo.dependencies).map(([dep, ver]) => `${dep} v${ver}`).join(', ')}`);
+    }
+  });
+  
+  // Show all installed plugins (including those not loaded)
+  console.log('\nAll installed plugins:');
+  const installedPlugins = pluginManager.listInstalledPlugins();
+  installedPlugins.forEach(plugin => {
+    console.log(`- ${plugin.name} (${plugin.id}) v${plugin.version} - ${plugin.loaded ? 'Loaded' : 'Not loaded'}`);
+    if (Object.keys(plugin.dependencies).length > 0) {
+      console.log(`  Dependencies: ${Object.entries(plugin.dependencies).map(([dep, ver]) => `${dep} v${ver}`).join(', ')}`);
+    }
   });
   
   // Show available commands
@@ -60,6 +102,9 @@ async function testPluginManager() {
     }
     if (commands.includes('reverse')) {
       console.log('Reversed text:', pluginManager.executeCommand('reverse', ['hello', 'world']));
+    }
+    if (commands.includes('dependent')) {
+      console.log('Dependent command result:', pluginManager.executeCommand('dependent'));
     }
   } else {
     console.log('\nNo commands available to test.');

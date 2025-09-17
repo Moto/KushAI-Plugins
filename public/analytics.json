@@ -1,0 +1,32 @@
+{
+  "analytics": {
+    "sample-plugin": {
+      "total_installs": 1250,
+      "active_users": 842,
+      "uninstalls": 42,
+      "avg_rating": 4.5,
+      "last_updated": "2023-10-15"
+    },
+    "utility-plugin": {
+      "total_installs": 2100,
+      "active_users": 1560,
+      "uninstalls": 85,
+      "avg_rating": 4.2,
+      "last_updated": "2023-10-15"
+    },
+    "productivity-plugin": {
+      "total_installs": 980,
+      "active_users": 720,
+      "uninstalls": 25,
+      "avg_rating": 4.7,
+      "last_updated": "2023-10-15"
+    },
+    "dependent-plugin": {
+      "total_installs": 320,
+      "active_users": 210,
+      "uninstalls": 15,
+      "avg_rating": 3.8,
+      "last_updated": "2023-10-15"
+    }
+  }
+}

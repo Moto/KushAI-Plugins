@@ -1,0 +1,51 @@
+{
+  "ratings": {
+    "sample-plugin": {
+      "average": 4.5,
+      "count": 12,
+      "reviews": [
+        {
+          "author": "User123",
+          "rating": 5,
+          "comment": "This plugin is amazing! It works perfectly with my setup.",
+          "date": "2023-10-15"
+        },
+        {
+          "author": "DevUser",
+          "rating": 4,
+          "comment": "Very useful, but could use some additional features.",
+          "date": "2023-09-22"
+        }
+      ]
+    },
+    "utility-plugin": {
+      "average": 4.2,
+      "count": 8,
+      "reviews": [
+        {
+          "author": "TechEnthusiast",
+          "rating": 5,
+          "comment": "Essential tools for any KushAI user!",
+          "date": "2023-10-10"
+        }
+      ]
+    },
+    "productivity-plugin": {
+      "average": 4.7,
+      "count": 15,
+      "reviews": [
+        {
+          "author": "ProductivityGuru",
+          "rating": 5,
+          "comment": "This plugin has transformed my workflow!",
+          "date": "2023-10-05"
+        }
+      ]
+    },
+    "dependent-plugin": {
+      "average": 3.8,
+      "count": 5,
+      "reviews": []
+    }
+  }
+}

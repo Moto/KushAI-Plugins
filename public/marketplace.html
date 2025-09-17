@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KushAI Plugin Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        
+        .search-bar {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 0.8rem;
+            border: none;
+            border-radius: 25px;
+            background: white;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .plugins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .plugin-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .plugin-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .plugin-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .plugin-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+        
+        .plugin-title {
+            flex: 1;
+        }
+        
+        .plugin-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        
+        .plugin-version {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .plugin-description {
+            color: #555;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .plugin-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .plugin-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+        
+        .plugin-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stars {
+            color: #ffc107;
+            margin-right: 0.5rem;
+        }
+        
+        .rating-value {
+            font-weight: bold;
+        }
+        
+        .plugin-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+        }
+        
+        .stat-icon {
+            margin-right: 0.3rem;
+        }
+        
+        .plugin-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 5vh auto;
+            padding: 2rem;
+        }
+        
+        .close {
+            float: right;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .reviews {
+            margin-top: 1rem;
+        }
+        
+        .review {
+            border-bottom: 1px solid #eee;
+            padding: 1rem 0;
+        }
+        
+        .review:last-child {
+            border-bottom: none;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .review-author {
+            font-weight: bold;
+        }
+        
+        .review-date {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .analytics-chart {
+            height: 200px;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 1rem;
+        }
+        
+        .chart-bar {
+            width: 40px;
+            background: #667eea;
+            border-radius: 5px 5px 0 0;
+            text-align: center;
+            color: white;
+            font-size: 0.8rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .plugins-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-bar input {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>KushAI Plugin Marketplace</h1>
+            <p class="subtitle">Discover and install plugins to extend your KushAI assistant</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="controls">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search for plugins...">
+            </div>
+            <div class="filters">
+                <select class="filter-select" id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="utility">Utility</option>
+                    <option value="productivity">Productivity</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="development">Development</option>
+                </select>
+                <select class="filter-select" id="sortFilter">
+                    <option value="name">Sort by Name</option>
+                    <option value="rating">Sort by Rating</option>
+                    <option value="installs">Sort by Installs</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="pluginsContainer">
+            <div class="loading">Loading plugins...</div>
+        </div>
+    </main>
+    
+    <!-- Plugin Details Modal -->
+    <div id="pluginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>KushAI Plugin Marketplace &copy; 2023</p>
+        </div>
+    </footer>
+    
+    <script>
+        // API endpoint for plugins
+        const API_BASE = 'https://moto.github.io/KushAI-Plugins';
+        
+        // DOM elements
+        const pluginsContainer = document.getElementById('pluginsContainer');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const pluginModal = document.getElementById('pluginModal');
+        const modalBody = document.getElementById('modalBody');
+        const closeBtn = document.querySelector('.close');
+        
+        // Plugin data
+        let allPlugins = [];
+        let pluginRatings = {};
+        let pluginAnalytics = {};
+        
+        // Load plugins, ratings, and analytics from the API
+        async function loadPluginsData() {
+            try {
+                pluginsContainer.innerHTML = '<div class="loading">Loading plugins...</div>';
+                
+                // Fetch the plugins index
+                const pluginsResponse = await fetch(`${API_BASE}/plugins.json`);
+                if (!pluginsResponse.ok) {
+                    throw new Error('Failed to fetch plugins');
+                }
+                
+                const pluginsData = await pluginsResponse.json();
+                
+                // Fetch the ratings
+                const ratingsResponse = await fetch(`${API_BASE}/ratings.json`);
+                if (!ratingsResponse.ok) {
+                    throw new Error('Failed to fetch ratings');
+                }
+                
+                const ratingsData = await ratingsResponse.json();
+                pluginRatings = ratingsData.ratings || {};
+                
+                // Fetch the analytics
+                const analyticsResponse = await fetch(`${API_BASE}/analytics.json`);
+                if (!analyticsResponse.ok) {
+                    throw new Error('Failed to fetch analytics');
+                }
+                
+                const analyticsData = await analyticsResponse.json();
+                pluginAnalytics = analyticsData.analytics || {};
+                
+                // Combine plugins with their ratings and analytics
+                allPlugins = pluginsData.plugins.map(plugin => {
+                    const ratingInfo = pluginRatings[plugin.id] || { average: 0, count: 0, reviews: [] };
+                    const analyticsInfo = pluginAnalytics[plugin.id] || { total_installs: 0, active_users: 0, avg_rating: 0 };
+                    return {
+                        ...plugin,
+                        rating: ratingInfo.average,
+                        reviewCount: ratingInfo.count,
+                        reviews: ratingInfo.reviews || [],
+                        installs: analyticsInfo.total_installs,
+                        activeUsers: analyticsInfo.active_users
+                    };
+                });
+                
+                displayPlugins(allPlugins);
+            } catch (error) {
+                pluginsContainer.innerHTML = `<div class="error">Error loading plugins: ${error.message}</div>`;
+                console.error('Error loading plugins:', error);
+            }
+        }
+        
+        // Display plugins in the UI
+        function displayPlugins(plugins) {
+            if (!plugins || plugins.length === 0) {
+                pluginsContainer.innerHTML = '<div class="loading">No plugins found</div>';
+                return;
+            }
+            
+            const pluginsHTML = plugins.map(plugin => `
+                <div class="plugin-card" data-id="${plugin.id}" data-category="${plugin.keywords ? plugin.keywords.join(' ') : ''}">
+                    <div class="plugin-header">
+                        <div class="plugin-icon">${plugin.name.charAt(0)}</div>
+                        <div class="plugin-title">
+                            <div class="plugin-name">${plugin.name}</div>
+                            <div class="plugin-version">v${plugin.version}</div>
+                        </div>
+                    </div>
+                    <div class="plugin-description">${plugin.description}</div>
+                    <div class="plugin-meta">
+                        <span>By ${plugin.author}</span>
+                        <span>${plugin.license}</span>
+                    </div>
+                    <div class="plugin-rating">
+                        <div class="stars">${'★'.repeat(Math.floor(plugin.rating))}${'☆'.repeat(5 - Math.floor(plugin.rating))}</div>
+                        <div class="rating-value">${plugin.rating}/5 (${plugin.reviewCount})</div>
+                    </div>
+                    <div class="plugin-stats">
+                        <div class="stat">
+                            <span class="stat-icon">📥</span>
+                            <span>${plugin.installs} installs</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-icon">👥</span>
+                            <span>${plugin.activeUsers} active</span>
+                        </div>
+                    </div>
+                    ${plugin.keywords && plugin.keywords.length > 0 ? `
+                        <div class="plugin-tags">
+                            ${plugin.keywords.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                    <div class="plugin-actions">
+                        <button class="btn btn-secondary" onclick="viewPluginDetails('${plugin.id}')">Details</button>
+                        <button class="btn btn-primary" onclick="installPlugin('${plugin.id}')">Install</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            pluginsContainer.innerHTML = `<div class="plugins-grid">${pluginsHTML}</div>`;
+        }
+        
+        // View plugin details
+        async function viewPluginDetails(pluginId) {
+            const plugin = allPlugins.find(p => p.id === pluginId);
+            if (!plugin) return;
+            
+            // Get analytics data for this plugin
+            const analytics = pluginAnalytics[pluginId] || { total_installs: 0, active_users: 0, uninstalls: 0 };
+            
+            // Create modal content
+            const stars = '★'.repeat(Math.floor(plugin.rating)) + '☆'.repeat(5 - Math.floor(plugin.rating));
+            
+            const reviewsHTML = plugin.reviews.map(review => `
+                <div class="review">
+                    <div class="review-header">
+                        <div class="review-author">${review.author}</div>
+                        <div class="review-date">${review.date}</div>
+                    </div>
+                    <div class="review-rating">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
+                    <div class="review-comment">${review.comment}</div>
+                </div>
+            `).join('');
+            
+            // Create a simple chart for analytics
+            const chartHTML = `
+                <div class="analytics-chart">
+                    <div class="chart-bar" style="height: ${Math.min(100, analytics.total_installs / 50)}%">${analytics.total_installs}</div>
+                    <div class="chart-bar" style="height: ${Math.min(100, analytics.active_users / 50)}%">${analytics.active_users}</div>
+                    <div class="chart-bar" style="height: ${Math.min(100, (analytics.total_installs - analytics.uninstalls) / 50)}%">${analytics.total_installs - analytics.uninstalls}</div>
+                </div>
+                <div style="display: flex; justify-content: space-around; font-size: 0.8rem; margin-top: 0.5rem;">
+                    <span>Installs</span>
+                    <span>Active</span>
+                    <span>Retention</span>
+                </div>
+            `;
+            
+            modalBody.innerHTML = `
+                <h2>${plugin.name}</h2>
+                <p><strong>Version:</strong> ${plugin.version}</p>
+                <p><strong>Description:</strong> ${plugin.description}</p>
+                <p><strong>Author:</strong> ${plugin.author}</p>
+                <p><strong>License:</strong> ${plugin.license}</p>
+                <div class="plugin-rating">
+                    <div class="stars">${stars}</div>
+                    <div class="rating-value">${plugin.rating}/5 (${plugin.reviewCount} reviews)</div>
+                </div>
+                <div class="plugin-stats">
+                    <div class="stat">
+                        <span class="stat-icon">📥</span>
+                        <span>${analytics.total_installs} total installs</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">👥</span>
+                        <span>${analytics.active_users} active users</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-icon">📉</span>
+                        <span>${analytics.uninstalls} uninstalls</span>
+                    </div>
+                </div>
+                ${chartHTML}
+                ${plugin.keywords ? `<p><strong>Tags:</strong> ${plugin.keywords.join(', ')}</p>` : ''}
+                <div class="reviews">
+                    <h3>User Reviews</h3>
+                    ${reviewsHTML || '<p>No reviews yet.</p>'}
+                </div>
+                <div class="plugin-actions" style="margin-top: 1rem;">
+                    <button class="btn btn-primary" onclick="installPlugin('${plugin.id}')">Install Plugin</button>
+                </div>
+            `;
+            
+            // Show modal
+            pluginModal.style.display = 'block';
+        }
+        
+        // Install a plugin (simulated)
+        function installPlugin(pluginId) {
+            // In a real implementation, this would download and install the plugin
+            alert(`Installing plugin: ${pluginId}
+
+In a real implementation, this would download and install the plugin files.`);
+            
+            // Close modal if it's open
+            pluginModal.style.display = 'none';
+        }
+        
+        // Close modal
+        function closeModal() {
+            pluginModal.style.display = 'none';
+        }
+        
+        // Search and filter plugins
+        function filterPlugins() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const category = categoryFilter.value;
+            const sort = sortFilter.value;
+            
+            let filteredPlugins = allPlugins.filter(plugin => {
+                // Search filter
+                const matchesSearch = !searchTerm || 
+                    plugin.name.toLowerCase().includes(searchTerm) || 
+                    plugin.description.toLowerCase().includes(searchTerm) ||
+                    (plugin.keywords && plugin.keywords.some(tag => tag.toLowerCase().includes(searchTerm)));
+                
+                // Category filter
+                const matchesCategory = !category || 
+                    (plugin.keywords && plugin.keywords.includes(category));
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            // Sort plugins
+            if (sort === 'rating') {
+                filteredPlugins.sort((a, b) => b.rating - a.rating);
+            } else if (sort === 'installs') {
+                filteredPlugins.sort((a, b) => b.installs - a.installs);
+            } else {
+                filteredPlugins.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            
+            displayPlugins(filteredPlugins);
+        }
+        
+        // Event listeners
+        searchInput.addEventListener('input', filterPlugins);
+        categoryFilter.addEventListener('change', filterPlugins);
+        sortFilter.addEventListener('change', filterPlugins);
+        closeBtn.addEventListener('click', closeModal);
+        window.addEventListener('click', (e) => {
+            if (e.target === pluginModal) {
+                closeModal();
+            }
+        });
+        
+        // Load plugins data when the page loads
+        document.addEventListener('DOMContentLoaded', loadPluginsData);
+    </script>
+</body>
+</html>

@@ -1,6 +1,18 @@
 {
   "plugins": [
     {
+      "id": "dependent-plugin",
+      "name": "Dependent Plugin",
+      "version": "1.0.0",
+      "description": "A plugin that depends on other plugins",
+      "author": "KushAI Team",
+      "license": "MIT",
+      "keywords": [
+        "dependency",
+        "example"
+      ]
+    },
+    {
       "id": "productivity-plugin",
       "name": "Productivity Plugin",
       "version": "1.0.0",

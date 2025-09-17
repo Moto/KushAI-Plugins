@@ -1,0 +1,16 @@
+{
+  "id": "dependent-plugin",
+  "name": "Dependent Plugin",
+  "version": "1.0.0",
+  "description": "A plugin that depends on other plugins",
+  "author": "KushAI Team",
+  "license": "MIT",
+  "main": "index.js",
+  "dependencies": {
+    "utility-plugin": "^1.0.0"
+  },
+  "keywords": [
+    "dependency",
+    "example"
+  ]
+}

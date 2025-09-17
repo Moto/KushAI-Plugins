@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KushAI Plugin Developer Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 2rem;
+        }
+        
+        .nav-tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 0.5rem;
+        }
+        
+        .nav-tab.active {
+            background: white;
+            border-bottom: 1px solid white;
+            position: relative;
+            bottom: -1px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+        
+        h3 {
+            color: #764ba2;
+            margin-bottom: 0.5rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        ul {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            border-radius: 5px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h3 {
+            margin-top: 0;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+                border-radius: 5px;
+            }
+            
+            .nav-tab.active {
+                bottom: 0;
+                border-bottom: 1px solid #ddd;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>KushAI Plugin Developer Portal</h1>
+            <p class="subtitle">Create, publish, and manage plugins for the KushAI ecosystem</p>
+        </div>
+    </header>
+    
+    <main class="container">
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="getting-started">Getting Started</div>
+            <div class="nav-tab" data-tab="documentation">Documentation</div>
+            <div class="nav-tab" data-tab="tools">Developer Tools</div>
+            <div class="nav-tab" data-tab="publish">Publish Plugins</div>
+            <div class="nav-tab" data-tab="resources">Resources</div>
+        </div>
+        
+        <!-- Getting Started Tab -->
+        <div class="tab-content active" id="getting-started">
+            <div class="section">
+                <h2>Welcome to the KushAI Plugin Developer Portal</h2>
+                <p>Thank you for your interest in developing plugins for KushAI! This portal provides all the resources you need to create, test, and publish plugins for the KushAI ecosystem.</p>
+                <p>Plugins extend the functionality of KushAI by adding new tools, commands, and capabilities. They can integrate with external services, provide new AI features, or enhance existing functionality.</p>
+                
+                <h3>Quick Start Guide</h3>
+                <ol>
+                    <li><strong>Set up your development environment</strong> - Install the required tools and dependencies</li>
+                    <li><strong>Create your first plugin</strong> - Follow our tutorial to build a simple plugin</li>
+                    <li><strong>Test your plugin</strong> - Use our testing tools to ensure your plugin works correctly</li>
+                    <li><strong>Publish your plugin</strong> - Submit your plugin to the KushAI Plugin Marketplace</li>
+                </ol>
+                
+                <a href="#documentation" class="btn" onclick="switchTab('documentation')">View Documentation</a>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>Plugin Structure</h3>
+                    <p>Learn about the required files and structure for KushAI plugins.</p>
+                    <a href="#documentation" class="btn btn-secondary" onclick="switchTab('documentation')">Learn More</a>
+                </div>
+                
+                <div class="card">
+                    <h3>API Reference</h3>
+                    <p>Explore the KushAI Plugin API and available methods.</p>
+                    <a href="#documentation" class="btn btn-secondary" onclick="switchTab('documentation')">View API</a>
+                </div>
+                
+                <div class="card">
+                    <h3>Best Practices</h3>
+                    <p>Follow our guidelines for creating high-quality plugins.</p>
+                    <a href="#documentation" class="btn btn-secondary" onclick="switchTab('documentation')">Read Guidelines</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Documentation Tab -->
+        <div class="tab-content" id="documentation">
+            <div class="section">
+                <h2>Plugin Development Documentation</h2>
+                <p>This documentation provides comprehensive information about developing plugins for KushAI.</p>
+                
+                <h3>Plugin Structure</h3>
+                <p>Every KushAI plugin must include the following files:</p>
+                <ul>
+                    <li><code>manifest.json</code> - Plugin metadata and configuration</li>
+                    <li><code>plugin.py</code> - Main plugin implementation</li>
+                    <li><code>README.md</code> - Documentation and usage instructions</li>
+                    <li><code>config.json</code> - Optional configuration file</li>
+                </ul>
+                
+                <h3>Manifest File</h3>
+                <p>The <code>manifest.json</code> file contains metadata about your plugin:</p>
+                <pre>{
+  "name": "My Plugin",
+  "version": "1.0.0",
+  "author": "Your Name",
+  "description": "A brief description of what your plugin does",
+  "license": "MIT"
+}</pre>
+                
+                <h3>Plugin Implementation</h3>
+                <p>Your plugin must inherit from the <code>PluginBase</code> class and implement the required methods:</p>
+                <pre>from plugin_base import PluginBase
+from typing import Dict, Any, Generator
+
+class MyPlugin(PluginBase):
+    def get_tool_definition(self) -> Dict[str, Any]:
+        return {
+            "name": "my_plugin_tool",
+            "description": "Description of what this tool does",
+            "parameters": [
+                {
+                    "name": "param1",
+                    "type": "string",
+                    "description": "Description of param1",
+                    "required": True
+                }
+            ]
+        }
+
+    def execute_tool(self, parameters: Dict[str, Any]) -> Generator[str, None, None]:
+        # Implementation of your tool
+        yield "Result from my plugin tool"</pre>
+                
+                <h3>Plugin API</h3>
+                <p>Plugins have access to the following KushAI APIs:</p>
+                <ul>
+                    <li><code>self.assistant</code> - Access to the main assistant instance</li>
+                    <li><code>self.plugin_dir</code> - Path to the plugin's directory</li>
+                    <li><code>self.config</code> - Plugin configuration data</li>
+                    <li><code>self.get_config_value(key, default)</code> - Get a configuration value</li>
+                    <li><code>self.set_config_value(key, value)</code> - Set a configuration value</li>
+                    <li><code>self.save_config()</code> - Save configuration to file</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Tools Tab -->
+        <div class="tab-content" id="tools">
+            <div class="section">
+                <h2>Developer Tools</h2>
+                <p>We provide several tools to help you develop and test your plugins.</p>
+                
+                <h3>Plugin Validator</h3>
+                <p>Our plugin validator checks your plugin for common issues and ensures it meets our requirements.</p>
+                <pre># Run the validator on your plugin
+python validate_plugin.py /path/to/your/plugin</pre>
+                
+                <h3>Plugin Tester</h3>
+                <p>Test your plugin in a simulated KushAI environment before publishing.</p>
+                <pre># Test your plugin
+python test_plugin.py /path/to/your/plugin</pre>
+                
+                <h3>Debugging Tools</h3>
+                <p>Enable debug mode to get detailed logs and error information:</p>
+                <pre># Enable debug mode
+export KUSHAI_DEBUG=1
+python kush_ai.py</pre>
+                
+                <h3>Performance Profiler</h3>
+                <p>Analyze your plugin's performance and identify bottlenecks:</p>
+                <pre># Profile your plugin
+python profile_plugin.py /path/to/your/plugin</pre>
+            </div>
+        </div>
+        
+        <!-- Publish Tab -->
+        <div class="tab-content" id="publish">
+            <div class="section">
+                <h2>Publish Your Plugin</h2>
+                <p>Share your plugin with the KushAI community by publishing it to the Plugin Marketplace.</p>
+                
+                <h3>Submission Requirements</h3>
+                <ul>
+                    <li>Plugin must pass our validation checks</li>
+                    <li>Plugin must include comprehensive documentation</li>
+                    <li>Plugin must not contain malicious code</li>
+                    <li>Plugin must follow our coding standards</li>
+                    <li>Plugin must have a valid license</li>
+                </ul>
+                
+                <h3>Submission Process</h3>
+                <ol>
+                    <li>Fork the <a href="https://github.com/Moto/KushAI-Plugins" target="_blank">KushAI-Plugins repository</a></li>
+                    <li>Create a new branch for your plugin</li>
+                    <li>Add your plugin to the <code>plugins</code> directory</li>
+                    <li>Update the <code>plugins/index.json</code> file with your plugin's metadata</li>
+                    <li>Submit a pull request with your plugin</li>
+                </ol>
+                
+                <h3>Review Process</h3>
+                <p>Our team will review your plugin for:</p>
+                <ul>
+                    <li>Functionality and correctness</li>
+                    <li>Security and privacy compliance</li>
+                    <li>Documentation quality</li>
+                    <li>Code quality and best practices</li>
+                </ul>
+                
+                <h3>After Publication</h3>
+                <p>Once your plugin is published:</p>
+                <ul>
+                    <li>It will appear in the Plugin Marketplace</li>
+                    <li>Users can install and rate your plugin</li>
+                    <li>You'll receive analytics about plugin usage</li>
+                    <li>You can update your plugin by submitting new pull requests</li>
+                </ul>
+                
+                <a href="https://github.com/Moto/KushAI-Plugins" class="btn" target="_blank">Submit Your Plugin</a>
+            </div>
+        </div>
+        
+        <!-- Resources Tab -->
+        <div class="tab-content" id="resources">
+            <div class="section">
+                <h2>Developer Resources</h2>
+                <p>Access additional resources to help you develop plugins for KushAI.</p>
+                
+                <h3>Sample Plugins</h3>
+                <p>Study our sample plugins to understand best practices:</p>
+                <ul>
+                    <li><a href="https://github.com/Moto/KushAI-Plugins/tree/main/plugins/sample-plugin" target="_blank">Sample Plugin</a> - Basic plugin structure</li>
+                    <li><a href="https://github.com/Moto/KushAI-Plugins/tree/main/plugins/utility-plugin" target="_blank">Utility Plugin</a> - Common utility functions</li>
+                    <li><a href="https://github.com/Moto/KushAI-Plugins/tree/main/plugins/productivity-plugin" target="_blank">Productivity Plugin</a> - Task management features</li>
+                </ul>
+                
+                <h3>Community</h3>
+                <p>Connect with other KushAI plugin developers:</p>
+                <ul>
+                    <li><a href="https://github.com/Moto/KushAI-Plugins/discussions" target="_blank">GitHub Discussions</a> - Ask questions and share ideas</li>
+                    <li><a href="https://discord.gg/kushai" target="_blank">Discord Server</a> - Real-time chat with developers</li>
+                    <li><a href="https://twitter.com/kushai" target="_blank">Twitter</a> - Follow for updates and announcements</li>
+                </ul>
+                
+                <h3>Learning Resources</h3>
+                <ul>
+                    <li><a href="https://docs.kushai.com" target="_blank">KushAI Documentation</a> - Official documentation</li>
+                    <li><a href="https://github.com/Moto/KushAI-Plugins/wiki" target="_blank">Plugin Wiki</a> - Community-maintained wiki</li>
+                    <li><a href="https://youtube.com/kushai" target="_blank">Video Tutorials</a> - Step-by-step guides</li>
+                </ul>
+                
+                <h3>Support</h3>
+                <p>Get help with plugin development:</p>
+                <ul>
+                    <li><a href="https://github.com/Moto/KushAI-Plugins/issues" target="_blank">GitHub Issues</a> - Report bugs and request features</li>
+                    <li><a href="mailto:plugins@kushai.com">plugins@kushai.com</a> - Email support for plugin developers</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>KushAI Plugin Developer Portal &copy; 2023</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Tab switching functionality
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to the selected tab
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+        }
+        
+        // Add event listeners to tabs
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                switchTab(tab.dataset.tab);
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
