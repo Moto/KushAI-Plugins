@@ -6,9 +6,21 @@
   "author": "KushAI Team",
   "license": "MIT",
   "main": "index.js",
-  "keywords": [
+  "category": "utilities",
+  "tags": [
     "utility",
     "helper",
     "tools"
-  ]
+  ],
+  "versions": [
+    {
+      "version": "1.0.0",
+      "date": "2023-10-15",
+      "changes": "Initial release"
+    }
+  ],
+  "compatibility": {
+    "min_kushai_version": "1.0.0",
+    "max_kushai_version": "2.0.0"
+  }
 }

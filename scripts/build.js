@@ -77,4 +77,20 @@ if (fs.existsSync(developerFile)) {
   console.log('Copied developer.html to public directory');
 }
 
+// Copy versions.json to public directory
+const versionsFile = path.join(__dirname, '..', 'public', 'versions.json');
+const publicVersionsFile = path.join(publicDir, 'versions.json');
+if (fs.existsSync(versionsFile)) {
+  fs.copyFileSync(versionsFile, publicVersionsFile);
+  console.log('Copied versions.json to public directory');
+}
+
+// Copy categories.json to public directory
+const categoriesFile = path.join(__dirname, '..', 'public', 'categories.json');
+const publicCategoriesFile = path.join(publicDir, 'categories.json');
+if (fs.existsSync(categoriesFile)) {
+  fs.copyFileSync(categoriesFile, publicCategoriesFile);
+  console.log('Copied categories.json to public directory');
+}
+
 console.log('Build completed successfully!');

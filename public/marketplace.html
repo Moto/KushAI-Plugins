@@ -322,6 +322,51 @@
             font-size: 0.8rem;
         }
         
+        .versions {
+            margin-top: 1rem;
+        }
+        
+        .version-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .version-item:last-child {
+            border-bottom: none;
+        }
+        
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+        }
+        
+        .version-date {
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .category.active {
+            background: #2e7d32;
+            color: white;
+        }
+        
         footer {
             text-align: center;
             padding: 2rem;
@@ -365,15 +410,16 @@
             <div class="filters">
                 <select class="filter-select" id="categoryFilter">
                     <option value="">All Categories</option>
-                    <option value="utility">Utility</option>
+                    <option value="utilities">Utilities</option>
                     <option value="productivity">Productivity</option>
-                    <option value="entertainment">Entertainment</option>
                     <option value="development">Development</option>
+                    <option value="entertainment">Entertainment</option>
                 </select>
                 <select class="filter-select" id="sortFilter">
                     <option value="name">Sort by Name</option>
                     <option value="rating">Sort by Rating</option>
                     <option value="installs">Sort by Installs</option>
+                    <option value="updated">Sort by Last Updated</option>
                 </select>
             </div>
         </div>
@@ -414,8 +460,10 @@
         let allPlugins = [];
         let pluginRatings = {};
         let pluginAnalytics = {};
+        let pluginVersions = {};
+        let pluginCategories = {};
         
-        // Load plugins, ratings, and analytics from the API
+        // Load plugins, ratings, analytics, versions, and categories from the API
         async function loadPluginsData() {
             try {
                 pluginsContainer.innerHTML = '<div class="loading">Loading plugins...</div>';
@@ -446,17 +494,38 @@
                 const analyticsData = await analyticsResponse.json();
                 pluginAnalytics = analyticsData.analytics || {};
                 
-                // Combine plugins with their ratings and analytics
+                // Fetch the versions
+                const versionsResponse = await fetch(`${API_BASE}/versions.json`);
+                if (!versionsResponse.ok) {
+                    throw new Error('Failed to fetch versions');
+                }
+                
+                const versionsData = await versionsResponse.json();
+                pluginVersions = versionsData || {};
+                
+                // Fetch the categories
+                const categoriesResponse = await fetch(`${API_BASE}/categories.json`);
+                if (!categoriesResponse.ok) {
+                    throw new Error('Failed to fetch categories');
+                }
+                
+                const categoriesData = await categoriesResponse.json();
+                pluginCategories = categoriesData || {};
+                
+                // Combine plugins with their ratings, analytics, versions, and categories
                 allPlugins = pluginsData.plugins.map(plugin => {
                     const ratingInfo = pluginRatings[plugin.id] || { average: 0, count: 0, reviews: [] };
                     const analyticsInfo = pluginAnalytics[plugin.id] || { total_installs: 0, active_users: 0, avg_rating: 0 };
+                    const versionsInfo = pluginVersions[plugin.id] || [];
                     return {
                         ...plugin,
                         rating: ratingInfo.average,
                         reviewCount: ratingInfo.count,
                         reviews: ratingInfo.reviews || [],
                         installs: analyticsInfo.total_installs,
-                        activeUsers: analyticsInfo.active_users
+                        activeUsers: analyticsInfo.active_users,
+                        versions: versionsInfo,
+                        lastUpdated: versionsInfo.length > 0 ? versionsInfo[0].date : 'Unknown'
                     };
                 });
                 
@@ -475,7 +544,7 @@
             }
             
             const pluginsHTML = plugins.map(plugin => `
-                <div class="plugin-card" data-id="${plugin.id}" data-category="${plugin.keywords ? plugin.keywords.join(' ') : ''}">
+                <div class="plugin-card" data-id="${plugin.id}" data-category="${plugin.tags ? plugin.tags.join(' ') : ''}">
                     <div class="plugin-header">
                         <div class="plugin-icon">${plugin.name.charAt(0)}</div>
                         <div class="plugin-title">
@@ -502,9 +571,9 @@
                             <span>${plugin.activeUsers} active</span>
                         </div>
                     </div>
-                    ${plugin.keywords && plugin.keywords.length > 0 ? `
+                    ${plugin.tags && plugin.tags.length > 0 ? `
                         <div class="plugin-tags">
-                            ${plugin.keywords.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            ${plugin.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
                         </div>
                     ` : ''}
                     <div class="plugin-actions">
@@ -539,6 +608,17 @@
                 </div>
             `).join('');
             
+            // Create versions HTML
+            const versionsHTML = plugin.versions.map(version => `
+                <div class="version-item">
+                    <div class="version-header">
+                        <span>v${version.version}</span>
+                        <span class="version-date">${version.date}</span>
+                    </div>
+                    <div class="version-changes">${version.changes}</div>
+                </div>
+            `).join('');
+            
             // Create a simple chart for analytics
             const chartHTML = `
                 <div class="analytics-chart">
@@ -559,6 +639,7 @@
                 <p><strong>Description:</strong> ${plugin.description}</p>
                 <p><strong>Author:</strong> ${plugin.author}</p>
                 <p><strong>License:</strong> ${plugin.license}</p>
+                <p><strong>Last Updated:</strong> ${plugin.lastUpdated}</p>
                 <div class="plugin-rating">
                     <div class="stars">${stars}</div>
                     <div class="rating-value">${plugin.rating}/5 (${plugin.reviewCount} reviews)</div>
@@ -578,7 +659,11 @@
                     </div>
                 </div>
                 ${chartHTML}
-                ${plugin.keywords ? `<p><strong>Tags:</strong> ${plugin.keywords.join(', ')}</p>` : ''}
+                ${plugin.tags ? `<p><strong>Tags:</strong> ${plugin.tags.join(', ')}</p>` : ''}
+                <div class="versions">
+                    <h3>Version History</h3>
+                    ${versionsHTML || '<p>No version history available.</p>'}
+                </div>
                 <div class="reviews">
                     <h3>User Reviews</h3>
                     ${reviewsHTML || '<p>No reviews yet.</p>'}
@@ -595,9 +680,7 @@
         // Install a plugin (simulated)
         function installPlugin(pluginId) {
             // In a real implementation, this would download and install the plugin
-            alert(`Installing plugin: ${pluginId}
-
-In a real implementation, this would download and install the plugin files.`);
+            alert(`Installing plugin: ${pluginId}\n\nIn a real implementation, this would download and install the plugin files.`);
             
             // Close modal if it's open
             pluginModal.style.display = 'none';
@@ -619,11 +702,11 @@ In a real implementation, this would download and install the plugin files.`);
                 const matchesSearch = !searchTerm || 
                     plugin.name.toLowerCase().includes(searchTerm) || 
                     plugin.description.toLowerCase().includes(searchTerm) ||
-                    (plugin.keywords && plugin.keywords.some(tag => tag.toLowerCase().includes(searchTerm)));
+                    (plugin.tags && plugin.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
                 
                 // Category filter
                 const matchesCategory = !category || 
-                    (plugin.keywords && plugin.keywords.includes(category));
+                    (plugin.tags && plugin.tags.includes(category));
                 
                 return matchesSearch && matchesCategory;
             });
@@ -633,6 +716,8 @@ In a real implementation, this would download and install the plugin files.`);
                 filteredPlugins.sort((a, b) => b.rating - a.rating);
             } else if (sort === 'installs') {
                 filteredPlugins.sort((a, b) => b.installs - a.installs);
+            } else if (sort === 'updated') {
+                filteredPlugins.sort((a, b) => new Date(b.lastUpdated) - new Date(a.lastUpdated));
             } else {
                 filteredPlugins.sort((a, b) => a.name.localeCompare(b.name));
             }

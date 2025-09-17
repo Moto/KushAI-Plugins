@@ -19,11 +19,7 @@
       "description": "A plugin that helps with task management and productivity",
       "author": "KushAI Team",
       "license": "MIT",
-      "keywords": [
-        "productivity",
-        "task",
-        "management"
-      ]
+      "keywords": []
     },
     {
       "id": "sample-plugin",
@@ -32,10 +28,7 @@
       "description": "A sample plugin to demonstrate the plugin structure",
       "author": "KushAI Team",
       "license": "MIT",
-      "keywords": [
-        "sample",
-        "demo"
-      ]
+      "keywords": []
     },
     {
       "id": "utility-plugin",
@@ -44,11 +37,7 @@
       "description": "A plugin that provides various utility functions for KushAI",
       "author": "KushAI Team",
       "license": "MIT",
-      "keywords": [
-        "utility",
-        "helper",
-        "tools"
-      ]
+      "keywords": []
     }
   ]
 }

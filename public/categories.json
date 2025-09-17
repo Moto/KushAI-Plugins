@@ -1,0 +1,33 @@
+{
+  "categories": [
+    {
+      "id": "utilities",
+      "name": "Utilities",
+      "description": "Plugins that provide utility functions and tools",
+      "plugin_count": 2
+    },
+    {
+      "id": "productivity",
+      "name": "Productivity",
+      "description": "Plugins that help with productivity and task management",
+      "plugin_count": 1
+    },
+    {
+      "id": "development",
+      "name": "Development",
+      "description": "Plugins for developers and coding",
+      "plugin_count": 1
+    }
+  ],
+  "tags": [
+    "sample",
+    "demo",
+    "development",
+    "utility",
+    "helper",
+    "tools",
+    "productivity",
+    "task",
+    "management"
+  ]
+}
